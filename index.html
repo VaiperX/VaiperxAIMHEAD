@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vaiperx AIMHEAD</title>
     
+    <!-- บังคับระบบ iOS ปิดแถบ URL และแถบนำทางทั้งหมด -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Vaiperx">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
+    <!-- บังคับระบบ Android ปิดแถบเบราว์เซอร์ -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#000000">
     <link rel="icon" type="image/png" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <link rel="manifest" href='data:application/json,{"name":"Vaiperx AIMHEAD","short_name":"Vaiperx","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000","orientation":"portrait","icons":[{"src":"https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png","sizes":"512x512","type":"image/png"}]}'>
+    <!-- เรียกใช้งานไฟล์คอนฟิกภายนอกที่สร้างไว้ในขั้นตอนที่ 1 -->
+    <link rel="manifest" href="manifest.json">
 
+    <!-- นำเข้า Font & ไอคอน -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -44,9 +48,8 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            position: fixed; /* บังคับหน้าจอให้อยู่กับที่ ป้องกันหน้าเว็บขยับหรือเลื่อนหลุดกรอบ */
+            position: fixed;
             touch-action: none; 
-            /* ดึงพื้นที่การทำงานให้ทะลุขอบรอยบากกล้องและแถบสไลด์ด้านล่าง */
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
         }
@@ -279,6 +282,7 @@
 </head>
 <body>
 
+    <!-- หน้าจอแรก -->
     <div id="login-trigger-screen" onclick="initSystem()">
         <div class="tap-text">
             <i class="fa-solid fa-eye" style="font-size: 40px; color: var(--itachi-glow); margin-bottom: 15px;"></i><br>
@@ -287,15 +291,19 @@
         </div>
     </div>
 
+    <!-- วิดีโอพื้นหลัง -->
     <video id="bg-video" loop playsinline>
         <source src="https://cdn.discordapp.com/attachments/1347319667542327448/1516579349334331512/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mov?ex=6a332815&is=6a31d695&hm=e04b02f2fd1fb97055f9d7baa7e4911e9d8101e56f3c1d7773560eead21f6e59&" type="video/mp4">
     </video>
 
+    <!-- ไฟล์เสียง -->
     <audio id="bg-audio" src="https://solar-green-qmgluxdk.edgeone.app/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mp3"></audio>
 
+    <!-- เอฟเฟคสายฟ้า -->
     <div id="lightning-flash"></div>
     <audio id="thunder-sound" src="https://assets.mixkit.co/active_storage/sfx/1657/1657-84.wav" preload="auto"></audio>
 
+    <!-- หน้าจอรอ 5 วินาที -->
     <div id="intro-screen">
         <div>
             <div class="intro-title">MANGEDKYO SHARINGAN</div>
@@ -303,6 +311,7 @@
         </div>
     </div>
 
+    <!-- หน้าต่างพาแนลหลัก -->
     <div id="mod-panel">
         <div class="panel-header">
             <img src="https://i.postimg.cc/Dy0nF9Vm/BB0817E8-3B60-4430-97AC-D14B39ACE9FD.png" alt="Itachi Uchiha" class="header-banner">
@@ -423,6 +432,9 @@
         const videoElement = document.getElementById('bg-video');
         const audioElement = document.getElementById('bg-audio');
 
+        // ตรวจสอบและดักสถานะว่าเปิดผ่านแอปโฮมสกรีนเดี่ยวจริงไหม
+        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
         if (navigator.getBattery) {
             navigator.getBattery().then(function(battery) {
                 function updateBattery() {
@@ -458,11 +470,13 @@
             videoElement.play();
             audioElement.play();
 
-            // ระบบขอสิทธิ์แสดงผลเต็มจอไร้ขอบจากเบราว์เซอร์ทันทีที่มีการทัชจอครั้งแรก
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch(e => console.log(e));
-            } else if (document.documentElement.webkitRequestFullscreen) {
-                document.documentElement.webkitRequestFullscreen();
+            // บังคับขอสิทธิ์ขยายขอบจอแบบ Fullscreen API (สำหรับแอนดรอยด์หรือกรณีหลุดคา)
+            if (!isStandalone) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(e => console.log(e));
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen();
+                }
             }
 
             setTimeout(() => {
@@ -508,21 +522,17 @@
             }, 1000);
         }
 
-        // ฝังตัวลงทะเบียน Service Worker ชั้นสูง (แกนหลักที่ทำให้ระบบ iOS/Android ตัดขอบเบราว์เซอร์ทิ้ง)
+        // ลงทะเบียนระบบแอปพลิเคชัน Service Worker เสมือน
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 const swCode = `
                     self.addEventListener('install', function(e) { self.skipWaiting(); });
                     self.addEventListener('activate', function(e) { e.waitUntil(self.clients.claim()); });
-                    self.addEventListener('fetch', function(e) { e.respondWith(fetch(e.request).catch(function() { return new Response('Offline'); })); });
+                    self.addEventListener('fetch', function(e) { e.respondWith(fetch(e.request)); });
                 `;
                 const blob = new Blob([swCode], { type: 'text/javascript' });
                 const blobURL = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(blobURL).then(function(reg) {
-                    console.log('ServiceWorker registered successfully');
-                }).catch(function(err) {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
+                navigator.serviceWorker.register(blobURL);
             });
         }
     </script>
