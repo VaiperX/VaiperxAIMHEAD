@@ -2,24 +2,22 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <!-- ปรับปรุงค่า viewport ให้รองรับการแสดงผลทะลุรอยบากและขอบจอโทรศัพท์ (viewport-fit=cover) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Vaiperx AIMHEAD - ITACHI EDITION</title>
+    <title>Vaiperx AIMHEAD - Fullscreen App</title>
     
-    <!-- --- คำสั่งบังคับเต็มจอ (Fullscreen PWA) เพื่อซ่อนแถบลิงก์ด้านล่างและด้านบน --- -->
+    <!-- บังคับเปิดโหมดแอปพลิเคชันเดี่ยวสำหรับ iOS (ซ่อนแถบนำทางของ Safari) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- บังคับให้แถบสถานะด้านบนโปร่งใสและกลืนไปกับตัวแอป -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Vaiperx">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
+    <!-- บังคับเปิดโหมดแอปพลิเคชันเดี่ยวสำหรับ Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <!-- ฝัง Web App Manifest เพื่อตัดแถบ URL เบราว์เซอร์ออกถาวร (display: fullscreen) -->
+    <!-- ฝัง Web App Manifest โดยตั้งค่า display เป็น "fullscreen" เพื่อตัดขอบและแถบ URL เบราว์เซอร์ออกทั้งหมด -->
     <link rel="manifest" href='data:application/json,{"name":"Vaiperx AIMHEAD","short_name":"Vaiperx","start_url":".","display":"fullscreen","background_color":"#000000","theme_color":"#000000","orientation":"portrait","icons":[{"src":"https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png","sizes":"512x512","type":"image/png"}]}'>
 
-    <!-- นำเข้า Font & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -49,14 +47,11 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
-            /* ป้องกันการเลื่อนจอหลุดขอบบนมือถือ */
             touch-action: none; 
-            /* ดึงพื้นที่หน้าจอขยายขึ้นไปจนสุดขอบโทรศัพท์ (แก้ปัญหาพื้นที่ว่าง) */
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* วิดีโอพื้นหลังแบบคลุมพื้นที่ 100% */
         #bg-video {
             position: fixed;
             top: 0; left: 0;
@@ -470,10 +465,10 @@
             videoElement.play();
             audioElement.play();
 
-            // บังคับให้เบราว์เซอร์ทำ Fullscreen สำหรับเครื่องที่รองรับ API ทันทีหลังกดแตะหน้าจอครั้งแรก
+            // เรียกใช้สิทธิ์ Fullscreen ทันทีเมื่อมีการสัมผัสหน้าจอตามเงื่อนไขความปลอดภัยของเบราว์เซอร์
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen().catch(e => console.log(e));
-            } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+            } else if (document.documentElement.webkitRequestFullscreen) {
                 document.documentElement.webkitRequestFullscreen();
             }
 
