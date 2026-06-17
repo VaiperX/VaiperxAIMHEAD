@@ -2,10 +2,13 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
+    <!-- ปรับปรุงค่า viewport ให้รองรับการแสดงผลทะลุรอยบากและขอบจอโทรศัพท์ (viewport-fit=cover) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vaiperx AIMHEAD - ITACHI EDITION</title>
     
+    <!-- --- คำสั่งบังคับเต็มจอ (Fullscreen PWA) เพื่อซ่อนแถบลิงก์ด้านล่างและด้านบน --- -->
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- บังคับให้แถบสถานะด้านบนโปร่งใสและกลืนไปกับตัวแอป -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Vaiperx">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
@@ -13,8 +16,10 @@
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <link rel="manifest" href='data:application/json,{"name":"Vaiperx AIMHEAD","short_name":"Vaiperx","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000","orientation":"portrait","icons":[{"src":"https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png","sizes":"512x512","type":"image/png"}]}'>
+    <!-- ฝัง Web App Manifest เพื่อตัดแถบ URL เบราว์เซอร์ออกถาวร (display: fullscreen) -->
+    <link rel="manifest" href='data:application/json,{"name":"Vaiperx AIMHEAD","short_name":"Vaiperx","start_url":".","display":"fullscreen","background_color":"#000000","theme_color":"#000000","orientation":"portrait","icons":[{"src":"https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png","sizes":"512x512","type":"image/png"}]}'>
 
+    <!-- นำเข้า Font & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -44,11 +49,14 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
-            /* รองรับพื้นที่บากหน้าจอของมือถือรุ่นใหม่ๆ */
+            /* ป้องกันการเลื่อนจอหลุดขอบบนมือถือ */
+            touch-action: none; 
+            /* ดึงพื้นที่หน้าจอขยายขึ้นไปจนสุดขอบโทรศัพท์ (แก้ปัญหาพื้นที่ว่าง) */
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
         }
 
+        /* วิดีโอพื้นหลังแบบคลุมพื้นที่ 100% */
         #bg-video {
             position: fixed;
             top: 0; left: 0;
@@ -118,8 +126,8 @@
 
         #mod-panel {
             position: fixed;
-            top: 3%; left: 5%;
-            width: 90%; height: 94%;
+            top: 2%; left: 5%;
+            width: 90%; height: 96%;
             background: var(--panel-bg);
             border: 2px solid var(--itachi-red);
             border-radius: 20px;
@@ -266,7 +274,6 @@
             box-shadow: 0 4px 15px rgba(204, 0, 41, 0.4);
             transition: 0.2s;
         }
-        .btn-inject:active { transform: scale(0.98); filter: brightness(1.3); }
 
         #inject-status { display: none; text-align: center; color: #fff; margin-top: 12px; font-size: 12px; }
         .progress-bar { width: 100%; height: 5px; background: #1a1113; margin-top: 6px; border-radius: 10px; overflow: hidden; border: 1px solid #331a1f; }
@@ -278,6 +285,7 @@
 </head>
 <body>
 
+    <!-- หน้าจอแรก -->
     <div id="login-trigger-screen" onclick="initSystem()">
         <div class="tap-text">
             <i class="fa-solid fa-eye" style="font-size: 40px; color: var(--itachi-glow); margin-bottom: 15px;"></i><br>
@@ -286,15 +294,19 @@
         </div>
     </div>
 
+    <!-- วิดีโอพื้นหลัง -->
     <video id="bg-video" loop playsinline>
         <source src="https://cdn.discordapp.com/attachments/1347319667542327448/1516579349334331512/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mov?ex=6a332815&is=6a31d695&hm=e04b02f2fd1fb97055f9d7baa7e4911e9d8101e56f3c1d7773560eead21f6e59&" type="video/mp4">
     </video>
 
+    <!-- ไฟล์เสียง -->
     <audio id="bg-audio" src="https://solar-green-qmgluxdk.edgeone.app/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mp3"></audio>
 
+    <!-- เอฟเฟคสายฟ้า -->
     <div id="lightning-flash"></div>
     <audio id="thunder-sound" src="https://assets.mixkit.co/active_storage/sfx/1657/1657-84.wav" preload="auto"></audio>
 
+    <!-- หน้าจอรอ 5 วินาที -->
     <div id="intro-screen">
         <div>
             <div class="intro-title">MANGEDKYO SHARINGAN</div>
@@ -302,6 +314,7 @@
         </div>
     </div>
 
+    <!-- หน้าต่างพาแนลหลัก -->
     <div id="mod-panel">
         <div class="panel-header">
             <img src="https://i.postimg.cc/Dy0nF9Vm/BB0817E8-3B60-4430-97AC-D14B39ACE9FD.png" alt="Itachi Uchiha" class="header-banner">
@@ -315,9 +328,7 @@
         </div>
 
         <div class="panel-content">
-            
             <div class="section-title"><i class="fa-solid fa-crosshairs"></i> COMBAT OPTIONS</div>
-            
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-bullseye"></i></div>
@@ -328,7 +339,6 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="aimhead"><span class="slider"></span></label>
             </div>
-
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-magnet"></i></div>
@@ -339,7 +349,6 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="magnet" checked><span class="slider"></span></label>
             </div>
-
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-hand-pointer"></i></div>
@@ -350,9 +359,7 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="instant-tap"><span class="slider"></span></label>
             </div>
-
             <div class="section-title"><i class="fa-solid fa-gauge-high"></i> PERFORMANCE BOOST</div>
-
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-rocket"></i></div>
@@ -363,7 +370,6 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="fps-boost" onchange="toggleFpsBoost(this)"><span class="slider"></span></label>
             </div>
-
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
@@ -374,9 +380,7 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="anti-lag" checked><span class="slider"></span></label>
             </div>
-
             <div class="section-title"><i class="fa-solid fa-user-shield"></i> BYPASS & SECURITY</div>
-
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-desktop"></i></div>
@@ -387,7 +391,6 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="anti-black" checked><span class="slider"></span></label>
             </div>
-
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-mask"></i></div>
@@ -398,7 +401,6 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="anti-ban" checked><span class="slider"></span></label>
             </div>
-
             <div class="cheat-card">
                 <div class="cheat-left">
                     <div class="cheat-icon-box"><i class="fa-solid fa-ban"></i></div>
@@ -409,7 +411,6 @@
                 </div>
                 <label class="switch"><input type="checkbox" id="anti-report" checked><span class="slider"></span></label>
             </div>
-
         </div>
 
         <div class="inject-container">
@@ -469,6 +470,13 @@
             videoElement.play();
             audioElement.play();
 
+            // บังคับให้เบราว์เซอร์ทำ Fullscreen สำหรับเครื่องที่รองรับ API ทันทีหลังกดแตะหน้าจอครั้งแรก
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(e => console.log(e));
+            } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+                document.documentElement.webkitRequestFullscreen();
+            }
+
             setTimeout(() => {
                 audioElement.pause();
                 audioElement.currentTime = 0;
@@ -482,7 +490,6 @@
                 
                 if (timeLeft <= 0) {
                     clearInterval(countdown);
-                    
                     introScreen.style.opacity = 0;
                     setTimeout(() => introScreen.style.display = 'none', 500);
 
@@ -499,15 +506,12 @@
         function startInject() {
             const statusDiv = document.getElementById('inject-status');
             const fill = document.getElementById('p-fill');
-            
             statusDiv.style.display = 'block';
             fill.style.width = '100%';
 
             setTimeout(() => {
                 document.getElementById('status-text').innerText = "SUCCESS! กำลังเปิด POTATSO...";
-                
                 window.location.href = "potatso://";
-                
                 setTimeout(() => {
                     fill.style.width = '0%';
                     statusDiv.style.display = 'none';
@@ -516,7 +520,6 @@
             }, 1000);
         }
 
-        // ลงทะเบียน Service Worker แบบจำลองเพื่อให้คุณสมบัติ PWA สมบูรณ์ (แก้ปัญหา Chrome บน Android บางรุ่น)
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch",function(e){})');
         }
