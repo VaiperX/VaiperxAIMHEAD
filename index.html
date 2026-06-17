@@ -2,268 +2,543 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>VaiperX ULTRA PRO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Vaiperx AIMHEAD - ITACHI EDITION</title>
     
-    <link rel="apple-touch-icon" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
-    <link rel="apple-touch-icon-precomposed" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
-    <link rel="shortcut icon" type="image/png" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
+    <!-- ฝังลิ้งก์รูปภาพเป็นไอคอนสำหรับกดเพิ่มลงหน้าจอหลัก (Home Screen Icon) -->
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <meta property="og:image" content="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="VaiperX">
-
+    <!-- นำเข้า Font & FontAwesome สำหรับไอคอน -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --bg-body: #050507;
-            --bg-panel: rgba(13, 13, 17, 0.80);
-            --accent: #ff0033;
-            --accent-glow: rgba(255, 0, 51, 0.4);
-            --text-main: #f0f0f0;
-            --text-dim: #707075;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.06);
+            --bg-main: #000000;
+            --panel-bg: rgba(10, 2, 4, 0.82);
+            --itachi-red: #cc0029;
+            --itachi-glow: #ff0033;
+            --sharingan-purple: #4a001a;
+            --text-color: #ffffff;
+            --shadow-glow: 0 0 20px var(--itachi-glow), 0 0 40px var(--sharingan-purple);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        
-        body, html { 
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', 'Orbitron', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
-            background-color: var(--bg-body); 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            position: relative;
         }
 
-        /* วิดีโอพื้นหลัง ยืดขยายตัดขอบให้เข้ากับขนาดหน้าจอมือถือทุกรุ่นแบบ 100% */
-        .video-background {
+        /* --- วิดีโอพื้นหลัง --- */
+        #bg-video {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -100;
+            width: 100vw; height: 100vh;
             object-fit: cover;
-            background-position: center center;
-            display: block;
+            z-index: 1;
+            display: none;
         }
 
-        /* เลเยอร์ฟิล์มสีดำโปร่งแสงกรองด้านหลังเมนู */
-        .overlay {
+        /* --- เอฟเฟคสายฟ้าผ่า --- */
+        #lightning-flash {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -99;
-        }
-
-        .splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1a0505 0%, #050507 100%);
-            z-index: 999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-        .splash-btn {
-            padding: 15px 40px; background: var(--accent); color: white;
-            border: none; border-radius: 50px; font-weight: 800; font-size: 16px;
-            letter-spacing: 2px; cursor: pointer; box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .ui-container {
-            width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center; 
-            padding: calc(10px + env(safe-area-inset-top)) 15px calc(10px + env(safe-area-inset-bottom)) 15px;
-        }
-
-        .window { 
-            width: 100%; max-width: 360px; 
-            max-height: 90vh;
-            background: var(--bg-panel); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 35px; 
-            border: 1px solid var(--card-border); 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8); 
-            padding: 30px 22px; text-align: center;
-            position: relative; 
-            overflow-y: auto;
-            z-index: 10;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: white;
             opacity: 0;
-            transform: scale(0.9) translateY(20px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
             pointer-events: none;
         }
-        
-        .window.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            pointer-events: auto;
+
+        @keyframes flash-anim {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            20% { opacity: 0; }
+            25% { opacity: 1; }
+            40% { opacity: 0; }
+            100% { opacity: 0; }
         }
 
-        #lightningCanvas {
-            position: absolute; 
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; 
-            z-index: 1;
-            opacity: 0.6;
+        /* --- หน้าจอแรก: แตะเพื่อเข้าสู่ระบบ --- */
+        #login-trigger-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
         }
 
-        .content-wrap { position: relative; z-index: 5; }
-        .profile-img { width: 85px; height: 85px; border-radius: 24px; border: 1px solid var(--accent); margin-bottom: 12px; box-shadow: 0 10px 20px var(--accent-glow); object-fit: cover; }
-        .header h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(to bottom, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header p { margin: 5px 0 25px; font-size: 10px; color: var(--accent); letter-spacing: 4px; font-weight: 700; text-transform: uppercase; }
-        .menu-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
-        .row { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-radius: 18px; border: 1px solid var(--card-border); }
-        .label-group { display: flex; align-items: center; gap: 12px; }
-        .icon-box { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(255, 0, 51, 0.1); border-radius: 10px; color: var(--accent); }
-        .row span { font-size: 14px; font-weight: 600; color: var(--text-main); }
-        .switch { position: relative; width: 44px; height: 24px; }
+        .tap-text {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            animation: text-pulse 1.8s infinite;
+            text-align: center;
+        }
+
+        @keyframes text-pulse {
+            0% { opacity: 0.4; transform: scale(0.98); }
+            50% { opacity: 1; text-shadow: 0 0 25px var(--itachi-glow); color: var(--itachi-glow); transform: scale(1.02); }
+            100% { opacity: 0.4; transform: scale(0.98); }
+        }
+
+        /* --- หน้าจอรอ 5 วินาที --- */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            pointer-events: none;
+        }
+        .intro-title { font-family: 'Orbitron', sans-serif; color: var(--itachi-glow); font-size: 28px; font-weight: 900; letter-spacing: 4px; text-shadow: var(--shadow-glow); }
+        #timer { color: #fff; font-size: 32px; text-shadow: 0 0 10px var(--itachi-glow); }
+
+        /* --- หน้าต่าง UI ล้ำสมัย --- */
+        #mod-panel {
+            position: fixed;
+            top: 3%; left: 5%;
+            width: 90%; height: 94%;
+            background: var(--panel-bg);
+            border: 2px solid var(--itachi-red);
+            border-radius: 20px;
+            box-shadow: var(--shadow-glow), inset 0 0 30px rgba(204, 0, 41, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.7) translateY(30px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        #mod-panel.show { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+
+        /* ส่วนหัวพาแนล + การใส่รูปอิทาจิด้านบนตามรีเควส */
+        .panel-header {
+            background: linear-gradient(180deg, rgba(74, 0, 26, 0.6) 0%, rgba(10, 2, 4, 0) 100%);
+            border-bottom: 1px solid rgba(204, 0, 41, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+        }
+
+        .header-banner {
+            width: 100%;
+            max-height: 110px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            border-radius: 10px;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px var(--itachi-glow);
+        }
+
+        /* แถบสถานะเรียลไทม์ */
+        .status-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 5px;
+            border-bottom: 1px solid rgba(204, 0, 41, 0.25);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #ccc;
+        }
+        .status-item { display: flex; align-items: center; gap: 6px; }
+        .status-item i { color: var(--itachi-glow); }
+        .status-value { color: #fff; font-weight: bold; }
+
+        /* เนื้อหาฟังก์ชัน */
+        .panel-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--itachi-glow);
+            margin: 15px 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--itachi-glow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,0,51,0.4), rgba(0,0,0,0));
+        }
+
+        /* การ์ดฟังก์ชัน */
+        .cheat-card {
+            background: rgba(15, 5, 8, 0.65);
+            border: 1px solid rgba(204, 0, 41, 0.2);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .cheat-left { display: flex; align-items: center; gap: 14px; }
+
+        .cheat-icon-box {
+            width: 38px;
+            height: 38px;
+            background: rgba(204, 0, 41, 0.1);
+            border: 1px solid rgba(204, 0, 41, 0.3);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--itachi-glow);
+            font-size: 16px;
+        }
+
+        .cheat-info { display: flex; flex-direction: column; }
+        .cheat-name { color: var(--text-color); font-size: 14px; font-weight: 600; }
+        .cheat-desc { color: #8a8485; font-size: 11px; margin-top: 1px; }
+
+        /* สวิตช์เปิด/ปิด */
+        .switch { position: relative; display: inline-block; width: 48px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #252529; transition: .4s; border-radius: 30px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: #ececec; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background: var(--accent); }
-        input:checked + .slider:before { transform: translateX(20px); background: #fff; }
-        .btn-inject { display: block; width: 100%; padding: 18px; background: #fff; border: none; border-radius: 20px; color: #000; font-weight: 800; text-decoration: none; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        .status { margin-top: 15px; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
-        .window::-webkit-scrollbar { display: none; }
-        .window { -ms-overflow-style: none; scrollbar-width: none; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #1a1516; transition: .3s; border-radius: 6px; border: 1px solid #3d2b2f;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
+            background-color: #665255; transition: .3s; border-radius: 4px;
+        }
+        input:checked + .slider { background-color: rgba(204, 0, 41, 0.2); border-color: var(--itachi-glow); box-shadow: 0 0 10px rgba(255, 0, 51, 0.4); }
+        input:checked + .slider:before { transform: translateX(24px); background-color: var(--itachi-glow); box-shadow: 0 0 8px var(--itachi-glow); }
+
+        /* --- ส่วนท้ายสำหรับกลุ่มปุ่มกดอินเจ็ค --- */
+        .inject-container {
+            padding: 16px;
+            background: rgba(5, 1, 2, 0.95);
+            border-top: 1px solid rgba(204, 0, 41, 0.3);
+        }
+
+        .btn-inject {
+            width: 100%;
+            background: linear-gradient(135deg, #cc0029 0%, #590012 100%);
+            border: 1px solid var(--itachi-glow);
+            padding: 15px;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            border-radius: 10px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(204, 0, 41, 0.4);
+            transition: 0.2s;
+        }
+        .btn-inject:active { transform: scale(0.98); filter: brightness(1.3); }
+
+        #inject-status { display: none; text-align: center; color: #fff; margin-top: 12px; font-size: 12px; }
+        .progress-bar { width: 100%; height: 5px; background: #1a1113; margin-top: 6px; border-radius: 10px; overflow: hidden; border: 1px solid #331a1f; }
+        .progress-fill { width: 0%; height: 100%; background: var(--itachi-glow); box-shadow: 0 0 10px var(--itachi-glow); transition: width 1s linear; }
+
+        .panel-content::-webkit-scrollbar { width: 3px; }
+        .panel-content::-webkit-scrollbar-thumb { background: var(--itachi-red); }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-<div class="splash-screen" id="splashScreen">
-    <img src="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png" style="width: 80px; margin-bottom: 20px; border-radius: 20px;">
-    <button class="splash-btn" id="startBtn">START SYSTEM</button>
-</div>
+    <!-- หน้าจอแรก: บังคับแตะจอ -->
+    <div id="login-trigger-screen" onclick="initSystem()">
+        <div class="tap-text">
+            <i class="fa-solid fa-eye" style="font-size: 40px; color: var(--itachi-glow); margin-bottom: 15px;"></i><br>
+            ⚡ แตะหน้าจอ 1 ครั้ง เพื่อเข้าสู่ระบบ ⚡<br>
+            <span style="font-size: 12px; color: #666; font-family: 'Orbitron'; margin-top: 10px; display:block;">VAIPERX AIMHEAD</span>
+        </div>
+    </div>
 
-<video class="video-background" id="bgVideo" loop playsinline webkit-playsinline muted>
-    <source src="https://docs.google.com/uc?export=download&id=1JSGUG_84g2sazqsZvn7Lci9OC5UuJE91" type="video/mp4">
-</video>
+    <!-- วิดีโอพื้นหลัง -->
+    <video id="bg-video" loop playsinline>
+        <source src="https://cdn.discordapp.com/attachments/1347319667542327448/1516579349334331512/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mov?ex=6a332815&is=6a31d695&hm=e04b02f2fd1fb97055f9d7baa7e4911e9d8101e56f3c1d7773560eead21f6e59&" type="video/mp4">
+    </video>
 
-<audio id="bgAudio" loop>
-    <source src="https://solar-green-qmgluxdk.edgeone.app/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mp3" type="audio/mp3">
-</audio>
+    <!-- ไฟล์เสียง -->
+    <audio id="bg-audio" src="https://solar-green-qmgluxdk.edgeone.app/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mp3"></audio>
 
-<div class="overlay"></div>
+    <!-- เอฟเฟคสายฟ้า -->
+    <div id="lightning-flash"></div>
+    <audio id="thunder-sound" src="https://assets.mixkit.co/active_storage/sfx/1657/1657-84.wav" preload="auto"></audio>
 
-<div class="ui-container">
-    <div class="window" id="uiWindow">
-        <canvas id="lightningCanvas"></canvas>
-        <div class="content-wrap">
-            <img src="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png" class="profile-img">
-            <div class="header">
-                <h1>VaiperX ULTRA</h1>
-                <p>Thunder Protection</p>
+    <!-- หน้าจอรอ 5 วินาที -->
+    <div id="intro-screen">
+        <div>
+            <div class="intro-title">MANGEDKYO SHARINGAN</div>
+            <div style="color: #aaa; font-size: 14px; margin-top: 5px;">คลายคาถาลวงตาใน... <span id="timer">5</span> วินาที</div>
+        </div>
+    </div>
+
+    <!-- หน้าต่างพาแนลหลัก -->
+    <div id="mod-panel">
+        <!-- ส่วนหัว (เพิ่มภาพอิทาจิตามสั่งเรียบร้อยครับ) -->
+        <div class="panel-header">
+            <img src="https://i.postimg.cc/Dy0nF9Vm/BB0817E8-3B60-4430-97AC-D14B39ACE9FD.png" alt="Itachi Uchiha" class="header-banner">
+            <div class="panel-title">Vaiperx AIMHEAD</div>
+        </div>
+
+        <!-- แถบวิดเจ็ตแสดงผล -->
+        <div class="status-bar">
+            <div class="status-item"><i class="fa-solid fa-bolt"></i> PING: <span class="status-value" id="ping-val">18ms</span></div>
+            <div class="status-item"><i class="fa-solid fa-microchip"></i> FPS: <span class="status-value" id="fps-val">58</span></div>
+            <div class="status-item"><i class="fa-solid fa-battery-three-quarters"></i> BATTERY: <span class="status-value" id="battery-val">--%</span></div>
+        </div>
+
+        <!-- รายการโปรฟังก์ชันต่างๆ -->
+        <div class="panel-content">
+            
+            <div class="section-title"><i class="fa-solid fa-crosshairs"></i> COMBAT OPTIONS</div>
+            
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">ยิงตัวโดนหัว (Silent Aim)</span>
+                        <span class="cheat-desc">ล็อกเป้ากระสุนเข้าหัวอัตโนมัติเมื่อยิงถูกตัว</span>
+                    </div>
+                </div>
+                <label class="switch"><input type="checkbox" id="aimhead"><span class="slider"></span></label>
             </div>
-            <div class="menu-list">
-                <div class="row">
-                    <div class="label-group">
-                        <div class="icon-box">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
-                        </div>
-                        <span>ยิงตัวโดนหัว</span>
+
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-magnet"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">เป้าดูด ล็อกเป้า (Auto Magnet)</span>
+                        <span class="cheat-desc">ดึงเป้าเล็งเข้าหาศัตรูอย่างรวดเร็วและแม่นยำ</span>
                     </div>
-                    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
                 </div>
-                <div class="row">
-                    <div class="label-group">
-                        <div class="icon-box">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15a7 7 0 0 0 14 0"></path><path d="M2 9v3a10 10 0 0 0 20 0V9"></path><path d="M12 2v4"></path></svg>
-                        </div>
-                        <span>ระบบดูดหัว</span>
-                    </div>
-                    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-                </div>
-                <div class="row">
-                    <div class="label-group">
-                        <div class="icon-box">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                        </div>
-                        <span>ระบบกันแบน</span>
-                    </div>
-                    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-                </div>
-                <div class="row">
-                    <div class="label-group">
-                        <div class="icon-box">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        </div>
-                        <span>กันรหัสติดดำ</span>
-                    </div>
-                    <label class="switch"><input type="checkbox"><span class="slider"></span></label>
-                </div>
+                <label class="switch"><input type="checkbox" id="magnet" checked><span class="slider"></span></label>
             </div>
-            <div class="footer">
-                <a href="potatso://" class="btn-inject" id="mainBtn">Activate Protection</a>
-                <div class="status">ENCRYPTED CONNECTION : <span style="color:#00ff88">ON</span></div>
+
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-hand-pointer"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">เดินจิ้ม ไม่ต้องลาก (Instant Tap)</span>
+                        <span class="cheat-desc">แตะสั่งยิงหรือโจมตีทันทีโดยไม่ต้องทำการลากนิ้ว</span>
+                    </div>
+                </div>
+                <label class="switch"><input type="checkbox" id="instant-tap"><span class="slider"></span></label>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-gauge-high"></i> PERFORMANCE BOOST</div>
+
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-rocket"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">บูส FPS (Unlock 120 FPS)</span>
+                        <span class="cheat-desc">ปลดล็อกขีดจำกัดเฟรมเรตเพื่อความลื่นไหลระดับสูง</span>
+                    </div>
+                </div>
+                <label class="switch"><input type="checkbox" id="fps-boost" onchange="toggleFpsBoost(this)"><span class="slider"></span></label>
+            </div>
+
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">ระบบกันแลค (Lag Optimizer)</span>
+                        <span class="cheat-desc">เคลียร์ Ram และลดกระบวนการเบื้องหลังตัวเกม</span>
+                    </div>
+                </div>
+                <label class="switch"><input type="checkbox" id="anti-lag" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="section-title"><i class="fa-solid fa-user-shield"></i> BYPASS & SECURITY</div>
+
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-desktop"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">ระบบกันจอดำ (Anti-Black Screen)</span>
+                        <span class="cheat-desc">ป้องกันปัญหาหน้าจอมืดดับระหว่างทำการ Bypass</span>
+                    </div>
+                </div>
+                <label class="switch"><input type="checkbox" id="anti-black" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-mask"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">ระบบกันแบน (Anti-Ban Bypass)</span>
+                        <span class="cheat-desc">ซ่อนค่า Device ID และจำลองรหัสเครื่องแบบปลอดภัย</span>
+                    </div>
+                </div>
+                <label class="switch"><input type="checkbox" id="anti-ban" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="cheat-card">
+                <div class="cheat-left">
+                    <div class="cheat-icon-box"><i class="fa-solid fa-ban"></i></div>
+                    <div class="cheat-info">
+                        <span class="cheat-name">ระบบกันรีพอท (Block Report Logs)</span>
+                        <span class="cheat-desc">สกัดกั้นข้อมูลรายงานการโกงจากผู้เล่นอื่นส่งไปเซิร์ฟเวอร์</span>
+                    </div>
+                </div>
+                <label class="switch"><input type="checkbox" id="anti-report" checked><span class="slider"></span></label>
+            </div>
+
+        </div>
+
+        <!-- ปุ่มอินเจ็ค -->
+        <div class="inject-container">
+            <button class="btn-inject" onclick="startInject()">INJECT BYPASS SCRIPT</button>
+            <div id="inject-status">
+                <span id="status-text">กำลังรวบรวมจักระและเขียนไฟล์สคริปต์...</span>
+                <div class="progress-bar"><div class="progress-fill" id="p-fill"></div></div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    const video = document.getElementById('bgVideo');
-    const audio = document.getElementById('bgAudio');
-    const splash = document.getElementById('splashScreen');
-    const uiWindow = document.getElementById('uiWindow');
-    const startBtn = document.getElementById('startBtn');
-
-    // บังคับเตรียมโหลดข้อมูลวิดีโอและไฟล์เสียงล่วงหน้าก่อนถูกสั่งเล่น
-    window.addEventListener('DOMContentLoaded', () => {
-        video.load();
-        audio.load();
-    });
-
-    startBtn.addEventListener('click', function() {
-        // ทำการซ่อนหน้าต่างสแปลชสกรีนออกไป
-        splash.style.opacity = '0';
-        setTimeout(() => { splash.style.display = 'none'; }, 800);
+    <script>
+        let timeLeft = 5;
+        let isFpsBoosted = false;
         
-        // รันภาพวิดีโอพื้นหลังและไฟล์เสียงพร้อมกันอย่างสมบูรณ์แบบหลังเกิด Action จากผู้ใช้
-        video.play().catch(e => console.log("วิดีโอจากไดรฟ์ติดปัญหา: ", e));
-        audio.play().catch(e => console.log("ไฟล์เพลงติดปัญหา: ", e));
+        const triggerScreen = document.getElementById('login-trigger-screen');
+        const introScreen = document.getElementById('intro-screen');
+        const modPanel = document.getElementById('mod-panel');
+        const timerElement = document.getElementById('timer');
+        const flash = document.getElementById('lightning-flash');
+        const thunderSound = document.getElementById('thunder-sound');
+        const videoElement = document.getElementById('bg-video');
+        const audioElement = document.getElementById('bg-audio');
 
-        // ⏱️ หน่วงเวลา 5 วินาที (5000 มิลลิวินาที) ให้หน้าต่าง UI เมนูเด้งขึ้นมาเข้าจังหวะเพลงพอดี
-        setTimeout(() => {
-            uiWindow.classList.add('active');
-        }, 5000);
-    });
+        // ฟังก์ชันอ่านค่าแบตเตอรี่จริง
+        if (navigator.getBattery) {
+            navigator.getBattery().then(function(battery) {
+                function updateBattery() {
+                    document.getElementById('battery-val').innerText = Math.round(battery.level * 100) + '%';
+                }
+                updateBattery();
+                battery.addEventListener('levelchange', updateBattery);
+            });
+        } else {
+            document.getElementById('battery-val').innerText = '95%';
+        }
 
-    // ระบบเอฟเฟกต์สายฟ้าประดับหน้าจอ UI
-    const canvas = document.getElementById('lightningCanvas');
-    const ctx = canvas.getContext('2d');
-    function resizeCanvas() { canvas.width = uiWindow.offsetWidth; canvas.height = uiWindow.offsetHeight; }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+        // ระบบลูปสถานะปิง / FPS 
+        setInterval(() => {
+            const randomPing = Math.floor(Math.random() * (28 - 12 + 1)) + 12;
+            document.getElementById('ping-val').innerText = randomPing + 'ms';
 
-    function drawLightning() {
-        if(!uiWindow.classList.contains('active')) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let x = Math.random() * canvas.width;
-        let y = 0;
-        ctx.strokeStyle = '#ff0033'; ctx.lineWidth = 2; ctx.shadowBlur = 15; ctx.shadowColor = '#ff0033';
-        ctx.beginPath(); ctx.moveTo(x, y);
-        while (y < canvas.height) { x += (Math.random() - 0.5) * 50; y += Math.random() * 30; ctx.lineTo(x, y); }
-        ctx.stroke();
-        setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 100);
-    }
-    function thunderLoop() { setTimeout(() => { drawLightning(); thunderLoop(); }, Math.random() * 3000 + 1000); }
-    thunderLoop();
+            let randomFps;
+            if (isFpsBoosted) {
+                randomFps = Math.floor(Math.random() * (120 - 110 + 1)) + 110;
+            } else {
+                randomFps = Math.floor(Math.random() * (60 - 50 + 1)) + 50;
+            }
+            document.getElementById('fps-val').innerText = randomFps;
+        }, 600);
 
-    const mainBtn = document.getElementById('mainBtn');
-    mainBtn.onclick = function() {
-        this.innerText = "System Loading...";
-        setTimeout(() => { this.innerText = "System Active"; this.style.background = "#00ff88"; }, 2000);
-    };
+        function toggleFpsBoost(checkbox) {
+            isFpsBoosted = checkbox.checked;
+        }
 
-    // ความปลอดภัย: ป้องกันการกดตรวจสอบซอร์สโค้ดและคลิกขวา
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.onkeydown = function(e) { if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || (e.ctrlKey && e.keyCode === 85)) return false; };
-    setInterval(function() {
-        const startTime = performance.now(); debugger; const endTime = performance.now();
-        if (endTime - startTime > 100) { document.body.innerHTML = '<div style="background:#000; color:red; height:100vh; display:flex; align-items:center; justify-content:center; font-family:sans-serif; text-align:center; padding:20px;"><h1>SECURITY BREACH DETECTED</h1></div>'; }
-    }, 1000);
-</script>
+        // ฟังก์ชันทำงานหลังแตะหน้าจอครั้งแรก
+        function initSystem() {
+            triggerScreen.style.display = 'none';
+            videoElement.style.display = 'block';
+            videoElement.play();
+            audioElement.play();
 
+            // เพลงพื้นหลังจะหยุดเมื่อผ่านไป 20 วินาที
+            setTimeout(() => {
+                audioElement.pause();
+                audioElement.currentTime = 0;
+            }, 20000);
+
+            introScreen.style.display = 'flex';
+
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerElement.innerText = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    
+                    introScreen.style.opacity = 0;
+                    setTimeout(() => introScreen.style.display = 'none', 500);
+
+                    // เอฟเฟคสายฟ้า
+                    flash.style.animation = 'flash-anim 0.4s ease-out';
+                    try { thunderSound.play(); } catch(e) {}
+
+                    // แสดงพาแนลหลัก
+                    setTimeout(() => {
+                        modPanel.classList.add('show');
+                    }, 100);
+                }
+            }, 1000);
+        }
+
+        // ฟังก์ชันกดปุ่ม Inject สคริปต์ รัน 1 วิ แล้วลิงก์เด้งเข้าแอป Potatso ทันทีตามบรีฟ
+        function startInject() {
+            const statusDiv = document.getElementById('inject-status');
+            const fill = document.getElementById('p-fill');
+            
+            statusDiv.style.display = 'block';
+            fill.style.width = '100%';
+
+            setTimeout(() => {
+                document.getElementById('status-text').innerText = "SUCCESS! กำลังเปิด POTATSO...";
+                
+                // คำสั่งเด้งเข้าแอป Potatso โดยตรง
+                window.location.href = "potatso://";
+                
+                setTimeout(() => {
+                    fill.style.width = '0%';
+                    statusDiv.style.display = 'none';
+                    document.getElementById('status-text').innerText = "กำลังรวบรวมจักระและเขียนไฟล์สคริปต์...";
+                }, 2000);
+            }, 1000); // ดีเลย์การอ่านสคริปต์ 1 วินาทีเป๊ะๆ ก่อนเด้งเปิดแอป
+        }
+    </script>
 </body>
 </html>
