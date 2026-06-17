@@ -2,14 +2,19 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vaiperx AIMHEAD - ITACHI EDITION</title>
     
-    <!-- ฝังลิ้งก์รูปภาพเป็นไอคอนสำหรับกดเพิ่มลงหน้าจอหลัก (Home Screen Icon) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Vaiperx">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
+    
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <!-- นำเข้า Font & FontAwesome สำหรับไอคอน -->
+    <link rel="manifest" href='data:application/json,{"name":"Vaiperx AIMHEAD","short_name":"Vaiperx","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000","orientation":"portrait","icons":[{"src":"https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png","sizes":"512x512","type":"image/png"}]}'>
+
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -39,9 +44,11 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
+            /* รองรับพื้นที่บากหน้าจอของมือถือรุ่นใหม่ๆ */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* --- วิดีโอพื้นหลัง --- */
         #bg-video {
             position: fixed;
             top: 0; left: 0;
@@ -51,7 +58,6 @@
             display: none;
         }
 
-        /* --- เอฟเฟคสายฟ้าผ่า --- */
         #lightning-flash {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -70,7 +76,6 @@
             100% { opacity: 0; }
         }
 
-        /* --- หน้าจอแรก: แตะเพื่อเข้าสู่ระบบ --- */
         #login-trigger-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -97,7 +102,6 @@
             100% { opacity: 0.4; transform: scale(0.98); }
         }
 
-        /* --- หน้าจอรอ 5 วินาที --- */
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -112,7 +116,6 @@
         .intro-title { font-family: 'Orbitron', sans-serif; color: var(--itachi-glow); font-size: 28px; font-weight: 900; letter-spacing: 4px; text-shadow: var(--shadow-glow); }
         #timer { color: #fff; font-size: 32px; text-shadow: 0 0 10px var(--itachi-glow); }
 
-        /* --- หน้าต่าง UI ล้ำสมัย --- */
         #mod-panel {
             position: fixed;
             top: 3%; left: 5%;
@@ -135,7 +138,6 @@
 
         #mod-panel.show { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
 
-        /* ส่วนหัวพาแนล + การใส่รูปอิทาจิด้านบนตามรีเควส */
         .panel-header {
             background: linear-gradient(180deg, rgba(74, 0, 26, 0.6) 0%, rgba(10, 2, 4, 0) 100%);
             border-bottom: 1px solid rgba(204, 0, 41, 0.3);
@@ -163,7 +165,6 @@
             text-shadow: 0 0 15px var(--itachi-glow);
         }
 
-        /* แถบสถานะเรียลไทม์ */
         .status-bar {
             display: flex;
             justify-content: space-around;
@@ -178,7 +179,6 @@
         .status-item i { color: var(--itachi-glow); }
         .status-value { color: #fff; font-weight: bold; }
 
-        /* เนื้อหาฟังก์ชัน */
         .panel-content {
             flex: 1;
             padding: 15px;
@@ -198,13 +198,9 @@
             gap: 8px;
         }
         .section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(255,0,51,0.4), rgba(0,0,0,0));
+            content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,0,51,0.4), rgba(0,0,0,0));
         }
 
-        /* การ์ดฟังก์ชัน */
         .cheat-card {
             background: rgba(15, 5, 8, 0.65);
             border: 1px solid rgba(204, 0, 41, 0.2);
@@ -236,7 +232,6 @@
         .cheat-name { color: var(--text-color); font-size: 14px; font-weight: 600; }
         .cheat-desc { color: #8a8485; font-size: 11px; margin-top: 1px; }
 
-        /* สวิตช์เปิด/ปิด */
         .switch { position: relative; display: inline-block; width: 48px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
@@ -250,7 +245,6 @@
         input:checked + .slider { background-color: rgba(204, 0, 41, 0.2); border-color: var(--itachi-glow); box-shadow: 0 0 10px rgba(255, 0, 51, 0.4); }
         input:checked + .slider:before { transform: translateX(24px); background-color: var(--itachi-glow); box-shadow: 0 0 8px var(--itachi-glow); }
 
-        /* --- ส่วนท้ายสำหรับกลุ่มปุ่มกดอินเจ็ค --- */
         .inject-container {
             padding: 16px;
             background: rgba(5, 1, 2, 0.95);
@@ -284,7 +278,6 @@
 </head>
 <body>
 
-    <!-- หน้าจอแรก: บังคับแตะจอ -->
     <div id="login-trigger-screen" onclick="initSystem()">
         <div class="tap-text">
             <i class="fa-solid fa-eye" style="font-size: 40px; color: var(--itachi-glow); margin-bottom: 15px;"></i><br>
@@ -293,19 +286,15 @@
         </div>
     </div>
 
-    <!-- วิดีโอพื้นหลัง -->
     <video id="bg-video" loop playsinline>
         <source src="https://cdn.discordapp.com/attachments/1347319667542327448/1516579349334331512/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mov?ex=6a332815&is=6a31d695&hm=e04b02f2fd1fb97055f9d7baa7e4911e9d8101e56f3c1d7773560eead21f6e59&" type="video/mp4">
     </video>
 
-    <!-- ไฟล์เสียง -->
     <audio id="bg-audio" src="https://solar-green-qmgluxdk.edgeone.app/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mp3"></audio>
 
-    <!-- เอฟเฟคสายฟ้า -->
     <div id="lightning-flash"></div>
     <audio id="thunder-sound" src="https://assets.mixkit.co/active_storage/sfx/1657/1657-84.wav" preload="auto"></audio>
 
-    <!-- หน้าจอรอ 5 วินาที -->
     <div id="intro-screen">
         <div>
             <div class="intro-title">MANGEDKYO SHARINGAN</div>
@@ -313,22 +302,18 @@
         </div>
     </div>
 
-    <!-- หน้าต่างพาแนลหลัก -->
     <div id="mod-panel">
-        <!-- ส่วนหัว (เพิ่มภาพอิทาจิตามสั่งเรียบร้อยครับ) -->
         <div class="panel-header">
             <img src="https://i.postimg.cc/Dy0nF9Vm/BB0817E8-3B60-4430-97AC-D14B39ACE9FD.png" alt="Itachi Uchiha" class="header-banner">
             <div class="panel-title">Vaiperx AIMHEAD</div>
         </div>
 
-        <!-- แถบวิดเจ็ตแสดงผล -->
         <div class="status-bar">
             <div class="status-item"><i class="fa-solid fa-bolt"></i> PING: <span class="status-value" id="ping-val">18ms</span></div>
             <div class="status-item"><i class="fa-solid fa-microchip"></i> FPS: <span class="status-value" id="fps-val">58</span></div>
             <div class="status-item"><i class="fa-solid fa-battery-three-quarters"></i> BATTERY: <span class="status-value" id="battery-val">--%</span></div>
         </div>
 
-        <!-- รายการโปรฟังก์ชันต่างๆ -->
         <div class="panel-content">
             
             <div class="section-title"><i class="fa-solid fa-crosshairs"></i> COMBAT OPTIONS</div>
@@ -427,7 +412,6 @@
 
         </div>
 
-        <!-- ปุ่มอินเจ็ค -->
         <div class="inject-container">
             <button class="btn-inject" onclick="startInject()">INJECT BYPASS SCRIPT</button>
             <div id="inject-status">
@@ -450,7 +434,6 @@
         const videoElement = document.getElementById('bg-video');
         const audioElement = document.getElementById('bg-audio');
 
-        // ฟังก์ชันอ่านค่าแบตเตอรี่จริง
         if (navigator.getBattery) {
             navigator.getBattery().then(function(battery) {
                 function updateBattery() {
@@ -463,7 +446,6 @@
             document.getElementById('battery-val').innerText = '95%';
         }
 
-        // ระบบลูปสถานะปิง / FPS 
         setInterval(() => {
             const randomPing = Math.floor(Math.random() * (28 - 12 + 1)) + 12;
             document.getElementById('ping-val').innerText = randomPing + 'ms';
@@ -481,14 +463,12 @@
             isFpsBoosted = checkbox.checked;
         }
 
-        // ฟังก์ชันทำงานหลังแตะหน้าจอครั้งแรก
         function initSystem() {
             triggerScreen.style.display = 'none';
             videoElement.style.display = 'block';
             videoElement.play();
             audioElement.play();
 
-            // เพลงพื้นหลังจะหยุดเมื่อผ่านไป 20 วินาที
             setTimeout(() => {
                 audioElement.pause();
                 audioElement.currentTime = 0;
@@ -506,11 +486,9 @@
                     introScreen.style.opacity = 0;
                     setTimeout(() => introScreen.style.display = 'none', 500);
 
-                    // เอฟเฟคสายฟ้า
                     flash.style.animation = 'flash-anim 0.4s ease-out';
                     try { thunderSound.play(); } catch(e) {}
 
-                    // แสดงพาแนลหลัก
                     setTimeout(() => {
                         modPanel.classList.add('show');
                     }, 100);
@@ -518,7 +496,6 @@
             }, 1000);
         }
 
-        // ฟังก์ชันกดปุ่ม Inject สคริปต์ รัน 1 วิ แล้วลิงก์เด้งเข้าแอป Potatso ทันทีตามบรีฟ
         function startInject() {
             const statusDiv = document.getElementById('inject-status');
             const fill = document.getElementById('p-fill');
@@ -529,7 +506,6 @@
             setTimeout(() => {
                 document.getElementById('status-text').innerText = "SUCCESS! กำลังเปิด POTATSO...";
                 
-                // คำสั่งเด้งเข้าแอป Potatso โดยตรง
                 window.location.href = "potatso://";
                 
                 setTimeout(() => {
@@ -537,7 +513,12 @@
                     statusDiv.style.display = 'none';
                     document.getElementById('status-text').innerText = "กำลังรวบรวมจักระและเขียนไฟล์สคริปต์...";
                 }, 2000);
-            }, 1000); // ดีเลย์การอ่านสคริปต์ 1 วินาทีเป๊ะๆ ก่อนเด้งเปิดแอป
+            }, 1000);
+        }
+
+        // ลงทะเบียน Service Worker แบบจำลองเพื่อให้คุณสมบัติ PWA สมบูรณ์ (แก้ปัญหา Chrome บน Android บางรุ่น)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch",function(e){})');
         }
     </script>
 </body>
