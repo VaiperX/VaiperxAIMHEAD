@@ -63,6 +63,17 @@
             display: none;
         }
 
+        /* วิดีโอเอฟเฟคตอนรัน Inject (จะอยู่เหนือทุกสิ่ง ไม่มี UI บัง) */
+        #inject-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            z-index: 99999; /* มิติสูงสุดเหนือกาแล็กซี */
+            background-color: #000;
+            display: none;
+        }
+
         #lightning-flash {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -291,12 +302,17 @@
         </div>
     </div>
 
-    <!-- วิดีโอพื้นหลัง -->
+    <!-- วิดีโอพื้นหลังหลัก -->
     <video id="bg-video" loop playsinline>
         <source src="https://cdn.discordapp.com/attachments/1347319667542327448/1516579349334331512/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mov?ex=6a332815&is=6a31d695&hm=e04b02f2fd1fb97055f9d7baa7e4911e9d8101e56f3c1d7773560eead21f6e59&" type="video/mp4">
     </video>
 
-    <!-- ไฟล์เสียง -->
+    <!-- วิดีโอเอฟเฟคตอนรัน Inject (ใส่ลิงก์ตัวใหม่แบบครอบเต็มหน้าจอตามสั่งเรียบร้อยครับ) -->
+    <video id="inject-video" playsinline>
+        <source src="https://media.discordapp.net/attachments/1347319667542327448/1516887874434240532/quality_restoration_25690618023039935.mov?ex=6a34476b&is=6a32f5eb&hm=14c7f82a1e7a16bd728080d86eca53e98518d7e952e6c89b973f236b6d6a4735&" type="video/mp4">
+    </video>
+
+    <!-- ไฟล์เสียงพื้นหลัง -->
     <audio id="bg-audio" src="https://solar-green-qmgluxdk.edgeone.app/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mp3"></audio>
 
     <!-- เอฟเฟคสายฟ้า -->
@@ -430,9 +446,9 @@
         const flash = document.getElementById('lightning-flash');
         const thunderSound = document.getElementById('thunder-sound');
         const videoElement = document.getElementById('bg-video');
+        const injectVideoElement = document.getElementById('inject-video');
         const audioElement = document.getElementById('bg-audio');
 
-        // ตรวจสอบและดักสถานะว่าเปิดผ่านแอปโฮมสกรีนเดี่ยวจริงไหม
         const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
         if (navigator.getBattery) {
@@ -470,7 +486,6 @@
             videoElement.play();
             audioElement.play();
 
-            // บังคับขอสิทธิ์ขยายขอบจอแบบ Fullscreen API (สำหรับแอนดรอยด์หรือกรณีหลุดคา)
             if (!isStandalone) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen().catch(e => console.log(e));
@@ -505,24 +520,49 @@
             }, 1000);
         }
 
+        // ฟังก์ชันระบบอินเจ็คแบบแสดงวิดีโอคัทซีนคั่นกลาง
         function startInject() {
             const statusDiv = document.getElementById('inject-status');
             const fill = document.getElementById('p-fill');
             statusDiv.style.display = 'block';
             fill.style.width = '100%';
 
+            // ขั้นตอนที่ 1: แถบวิ่งโหลดสคริปต์ 1 วินาที
             setTimeout(() => {
-                document.getElementById('status-text').innerText = "SUCCESS! กำลังเปิด POTATSO...";
-                window.location.href = "potatso://";
+                document.getElementById('status-text').innerText = "SUCCESS! รันคัทซีนข้อมูล...";
+                
+                // หยุดและซ่อนเสียง/วิดีโอแบ็คกราวด์เดิมชั่วคราว
+                audioElement.pause();
+                videoElement.pause();
+                
+                // ซ่อนหน้าต่าง UI หลักทั้งหมด (เพื่อให้วิดีโอเล่นได้โดยไม่มีอะไรบังหน้าจอ)
+                modPanel.style.display = 'none';
+
+                // ดึงเลเยอร์วิดีโอตัวใหม่ออกมาแสดงและสั่งเล่นทันทีแบบมีเสียง
+                injectVideoElement.style.display = 'block';
+                injectVideoElement.currentTime = 0;
+                injectVideoElement.play();
+
+                // ตั้งเวลาให้คลิปเล่นไปสักระยะ (ในที่นี้ตั้งไว้ 4 วินาทีเพื่อให้เห็นเอฟเฟคเต็มๆ หรือปรับเปลี่ยนได้ตามความยาวคลิป)
                 setTimeout(() => {
-                    fill.style.width = '0%';
-                    statusDiv.style.display = 'none';
-                    document.getElementById('status-text').innerText = "กำลังรวบรวมจักระและเขียนไฟล์สคริปต์...";
-                }, 2000);
-            }, 1000);
+                    // เด้งสลับสลับหน้าจอไปเปิดแอป Potatso ทันทีหลังคลิปเล่นเสร็จ
+                    window.location.href = "potatso://";
+
+                    // เคลียร์ระบบหลังบ้านคืนค่าเผื่อผู้ใช้สลับจอกลับมา
+                    setTimeout(() => {
+                        injectVideoElement.pause();
+                        injectVideoElement.style.display = 'none';
+                        modPanel.style.display = 'flex';
+                        statusDiv.style.display = 'none';
+                        fill.style.width = '0%';
+                        document.getElementById('status-text').innerText = "กำลังรวบรวมจักระและเขียนไฟล์สคริปต์...";
+                    }, 1500);
+
+                }, 4000); // 4000 มิลลิวินาที = 4 วินาที (ปรับตัวเลขนี้ให้ตรงกับระยะเวลาที่ต้องการให้โชว์คลิปได้ครับ)
+
+            }, 1000); // ระยะเวลาโหลดแถบสคริปต์ 1 วินาทีแรก
         }
 
-        // ลงทะเบียนระบบแอปพลิเคชัน Service Worker เสมือน
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 const swCode = `
