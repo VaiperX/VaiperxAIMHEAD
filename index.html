@@ -16,7 +16,7 @@
     <meta name="theme-color" content="#000000">
     <link rel="icon" type="image/png" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <!-- เรียกใช้งานไฟล์คอนฟิกภายนอกที่สร้างไว้ในขั้นตอนที่ 1 -->
+    <!-- เรียกใช้งานไฟล์คอนฟิกภายนอก -->
     <link rel="manifest" href="manifest.json">
 
     <!-- นำเข้า Font & ไอคอน -->
@@ -63,13 +63,13 @@
             display: none;
         }
 
-        /* วิดีโอเอฟเฟคตอนรัน Inject (จะอยู่เหนือทุกสิ่ง ไม่มี UI บัง) */
+        /* วิดีโอเอฟเฟคตอนรัน Inject */
         #inject-video {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
             object-fit: cover;
-            z-index: 99999; /* มิติสูงสุดเหนือกาแล็กซี */
+            z-index: 99999;
             background-color: #000;
             display: none;
         }
@@ -287,8 +287,8 @@
         .progress-bar { width: 100%; height: 5px; background: #1a1113; margin-top: 6px; border-radius: 10px; overflow: hidden; border: 1px solid #331a1f; }
         .progress-fill { width: 0%; height: 100%; background: var(--itachi-glow); box-shadow: 0 0 10px var(--itachi-glow); transition: width 1s linear; }
 
-        .panel-content::-webkit-scrollbar { width: 3px; }
-        .panel-content::-webkit-scrollbar-thumb { background: var(--itachi-red); }
+        .panel-content { scrollbar-width: none; } /* ซ่อนแถบเลื่อนบนเบราว์เซอร์ยุคใหม่ */
+        .panel-content::-webkit-scrollbar { width: 0px; display: none; } /* ซ่อนแถบเลื่อนของเว็บบน Chrome/Safari */
     </style>
 </head>
 <body>
@@ -304,16 +304,13 @@
 
     <!-- วิดีโอพื้นหลังหลัก -->
     <video id="bg-video" loop playsinline>
-        <source src="https://cdn.discordapp.com/attachments/1347319667542327448/1516579349334331512/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mov?ex=6a332815&is=6a31d695&hm=e04b02f2fd1fb97055f9d7baa7e4911e9d8101e56f3c1d7773560eead21f6e59&" type="video/mp4">
+        <source src="https://media.discordapp.net/attachments/1347319667542327448/1517194493156393060/copy_12E2BD4F-7DFB-4319-A4F6-699595B2C057.mov?ex=6a3564fb&is=6a34137b&hm=522dbeaeac250f7bef9a4ff6025b2e2fcb97cd2cdfa33a708dc37485697a7e33&" type="video/mp4">
     </video>
 
-    <!-- วิดีโอเอฟเฟคตอนรัน Inject (ใส่ลิงก์ตัวใหม่แบบครอบเต็มหน้าจอตามสั่งเรียบร้อยครับ) -->
+    <!-- วิดีโอเอฟเฟคตอนรัน Inject -->
     <video id="inject-video" playsinline>
         <source src="https://media.discordapp.net/attachments/1347319667542327448/1516887874434240532/quality_restoration_25690618023039935.mov?ex=6a34476b&is=6a32f5eb&hm=14c7f82a1e7a16bd728080d86eca53e98518d7e952e6c89b973f236b6d6a4735&" type="video/mp4">
     </video>
-
-    <!-- ไฟล์เสียงพื้นหลัง -->
-    <audio id="bg-audio" src="https://solar-green-qmgluxdk.edgeone.app/3C3E5F22-330F-4C94-BB4A-EC382DA10EB2.mp3"></audio>
 
     <!-- เอฟเฟคสายฟ้า -->
     <div id="lightning-flash"></div>
@@ -447,7 +444,6 @@
         const thunderSound = document.getElementById('thunder-sound');
         const videoElement = document.getElementById('bg-video');
         const injectVideoElement = document.getElementById('inject-video');
-        const audioElement = document.getElementById('bg-audio');
 
         const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
@@ -484,7 +480,6 @@
             triggerScreen.style.display = 'none';
             videoElement.style.display = 'block';
             videoElement.play();
-            audioElement.play();
 
             if (!isStandalone) {
                 if (document.documentElement.requestFullscreen) {
@@ -493,11 +488,6 @@
                     document.documentElement.webkitRequestFullscreen();
                 }
             }
-
-            setTimeout(() => {
-                audioElement.pause();
-                audioElement.currentTime = 0;
-            }, 20000);
 
             introScreen.style.display = 'flex';
 
@@ -520,35 +510,25 @@
             }, 1000);
         }
 
-        // ฟังก์ชันระบบอินเจ็คแบบแสดงวิดีโอคัทซีนคั่นกลาง
         function startInject() {
             const statusDiv = document.getElementById('inject-status');
             const fill = document.getElementById('p-fill');
             statusDiv.style.display = 'block';
             fill.style.width = '100%';
 
-            // ขั้นตอนที่ 1: แถบวิ่งโหลดสคริปต์ 1 วินาที
             setTimeout(() => {
                 document.getElementById('status-text').innerText = "SUCCESS! รันคัทซีนข้อมูล...";
                 
-                // หยุดและซ่อนเสียง/วิดีโอแบ็คกราวด์เดิมชั่วคราว
-                audioElement.pause();
                 videoElement.pause();
-                
-                // ซ่อนหน้าต่าง UI หลักทั้งหมด (เพื่อให้วิดีโอเล่นได้โดยไม่มีอะไรบังหน้าจอ)
                 modPanel.style.display = 'none';
 
-                // ดึงเลเยอร์วิดีโอตัวใหม่ออกมาแสดงและสั่งเล่นทันทีแบบมีเสียง
                 injectVideoElement.style.display = 'block';
                 injectVideoElement.currentTime = 0;
                 injectVideoElement.play();
 
-                // ตั้งเวลาให้คลิปเล่นไปสักระยะ (ในที่นี้ตั้งไว้ 4 วินาทีเพื่อให้เห็นเอฟเฟคเต็มๆ หรือปรับเปลี่ยนได้ตามความยาวคลิป)
                 setTimeout(() => {
-                    // เด้งสลับสลับหน้าจอไปเปิดแอป Potatso ทันทีหลังคลิปเล่นเสร็จ
                     window.location.href = "potatso://";
 
-                    // เคลียร์ระบบหลังบ้านคืนค่าเผื่อผู้ใช้สลับจอกลับมา
                     setTimeout(() => {
                         injectVideoElement.pause();
                         injectVideoElement.style.display = 'none';
@@ -558,9 +538,9 @@
                         document.getElementById('status-text').innerText = "กำลังรวบรวมจักระและเขียนไฟล์สคริปต์...";
                     }, 1500);
 
-                }, 4000); // 4000 มิลลิวินาที = 4 วินาที (ปรับตัวเลขนี้ให้ตรงกับระยะเวลาที่ต้องการให้โชว์คลิปได้ครับ)
+                }, 4000); 
 
-            }, 1000); // ระยะเวลาโหลดแถบสคริปต์ 1 วินาทีแรก
+            }, 1000); 
         }
 
         if ('serviceWorker' in navigator) {
