@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Vaiperx AIMHEAD</title>
     
-    <!-- บังคับระบบ iOS ปิดแถบ URL และแถบนำทางทั้งหมด -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Vaiperx">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <!-- บังคับระบบ Android ปิดแถบเบราว์เซอร์ -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#000000">
     <link rel="icon" type="image/png" href="https://i.postimg.cc/h4kRWfrK/A5CFD289-B14D-4BA2-B372-94B5D12B3301.png">
     
-    <!-- เรียกใช้งานไฟล์คอนฟิกภายนอก -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- นำเข้า Font & ไอคอน -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -293,7 +289,6 @@
 </head>
 <body>
 
-    <!-- หน้าจอแรก -->
     <div id="login-trigger-screen" onclick="initSystem()">
         <div class="tap-text">
             <i class="fa-solid fa-eye" style="font-size: 40px; color: var(--itachi-glow); margin-bottom: 15px;"></i><br>
@@ -302,21 +297,17 @@
         </div>
     </div>
 
-    <!-- วิดีโอพื้นหลังหลัก -->
     <video id="bg-video" loop playsinline>
-        <source src="https://media.discordapp.net/attachments/1347319667542327448/1517194493156393060/copy_12E2BD4F-7DFB-4319-A4F6-699595B2C057.mov?ex=6a3564fb&is=6a34137b&hm=522dbeaeac250f7bef9a4ff6025b2e2fcb97cd2cdfa33a708dc37485697a7e33&" type="video/mp4">
+        <source src="https://media.discordapp.net/attachments/1347319667542327448/1517194493156393060/copy_12E2BD4F-7DFB-4319-A4F6-699595B2C057.mov?ex=6a36b67b&is=6a3564fb&hm=40452a6bd82b78361e23039be1dc3627ab0b2bfcd9f665426aee371ece993d02&" type="video/mp4">
     </video>
 
-    <!-- วิดีโอเอฟเฟคตอนรัน Inject -->
     <video id="inject-video" playsinline>
-        <source src="https://media.discordapp.net/attachments/1347319667542327448/1516887874434240532/quality_restoration_25690618023039935.mov?ex=6a34476b&is=6a32f5eb&hm=14c7f82a1e7a16bd728080d86eca53e98518d7e952e6c89b973f236b6d6a4735&" type="video/mp4">
+        <source src="https://media.discordapp.net/attachments/1347319667542327448/1516887874434240532/quality_restoration_25690618023039935.mov?ex=6a3641ab&is=6a34f02b&hm=c71f5f77c918da9f00d2cd9a48f0857995865556681068a57c3a4245928a2d37&" type="video/mp4">
     </video>
 
-    <!-- เอฟเฟคสายฟ้า -->
     <div id="lightning-flash"></div>
     <audio id="thunder-sound" src="https://assets.mixkit.co/active_storage/sfx/1657/1657-84.wav" preload="auto"></audio>
 
-    <!-- หน้าจอรอ 5 วินาที -->
     <div id="intro-screen">
         <div>
             <div class="intro-title">MANGEDKYO SHARINGAN</div>
@@ -324,7 +315,6 @@
         </div>
     </div>
 
-    <!-- หน้าต่างพาแนลหลัก -->
     <div id="mod-panel">
         <div class="panel-header">
             <img src="https://i.postimg.cc/Dy0nF9Vm/BB0817E8-3B60-4430-97AC-D14B39ACE9FD.png" alt="Itachi Uchiha" class="header-banner">
